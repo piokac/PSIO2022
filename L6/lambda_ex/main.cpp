@@ -23,10 +23,12 @@ int main()
          << endl;
 
     float th = 5;
+
     cout << "LAMBDA: liczba dni z temp <0 stopnie: "
          << count_if(temp.begin(), temp.end(), [th](const float &el) { return el < th; }) << endl;
 
     Threshold thr(10);
+    thr(4);
     cout << "FUNCTOR: liczba dni z temp <th stopnie: " << count_if(temp.begin(), temp.end(), thr)
          << endl;
     return 0;
