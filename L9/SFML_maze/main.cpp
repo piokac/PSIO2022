@@ -2,37 +2,34 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 using namespace std;
+class Graphical_object : public sf::Sprite
+{
+    sf::Texture texture;
+
+public:
+    Graphical_object(string tex_filename, bool set_repeated)
+    {
+        texture.loadFromFile(tex_filename);
+        if (!texture.loadFromFile(tex_filename)) {
+            std::cerr << "Could not load texture" << std::endl;
+        }
+
+        else {
+            texture.setRepeated(set_repeated);
+            this->setTexture(texture);
+        }
+    }
+};
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-    sf::Texture texture;
-    if (!texture.loadFromFile("grass.png")) {
-        std::cerr << "Could not load texture" << std::endl;
-        return 1;
-    }
-    texture.setRepeated(true);
-    sf::Sprite sprite;
-    sprite.setTexture(texture);
 
-    sf::Texture texture_guy;
-    if (!texture_guy.loadFromFile("guy.png")) {
-        return 1;
-    }
+    Graphical_object grass("grass.png", true);
+    Graphical_object guy("guy.png", false);
+    guy.setTextureRect(sf::IntRect(10, 10, 800, 600));
 
-    sf::Sprite guy;
-
-    guy.setTexture(texture_guy);
-    guy.setTextureRect(sf::IntRect(10, 10, 800, 600)); //left, top, width, height
-
-    sf::Texture texture_wall;
-    if (!texture_wall.loadFromFile("wall.png")) {
-        return 1;
-    }
-    texture_wall.setRepeated(true);
-
-    sf::Sprite wall;
-    wall.setTexture(texture_wall);
+    Graphical_object wall("wall.png", true);
     wall.setScale(0.3, 0.3);
     wall.setTextureRect(sf::IntRect(0, 0, 500, 500));
 
@@ -60,7 +57,7 @@ int main()
         }
 
         window.clear(sf::Color::Black);
-        window.draw(sprite);
+        window.draw(grass);
         window.draw(wall);
         window.draw(guy);
 
